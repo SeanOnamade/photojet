@@ -18,7 +18,7 @@ exports.handler = async (event) => {
 
     // Create the email with the photo attachment
     const emailContent = {
-      to: "sean.d.onamade@vanderbilt.edu",  // Replace with your email
+      to: "seanonamade1@gmail.com",  // Replace with your email
       from: "sean.d.onamade@vanderbilt.edu",  // Replace with a verified sender
       subject: "New Photo Upload",
       text: "Here’s the photo you just uploaded.",
