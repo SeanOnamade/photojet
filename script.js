@@ -1,12 +1,14 @@
 // Display the selected file name on the custom label
-function showFileName() {
+function showFileNames() {
     const fileInput = document.getElementById("photo");
     const fileLabel = document.getElementById("fileLabel");
-    if (fileInput.files.length > 0) {
-      fileLabel.textContent = fileInput.files[0].name; // Show the selected file name
-    } else {
-      fileLabel.textContent = "Choose a photo"; // Reset label if no file selected
-    }
+    // if (fileInput.files.length > 0) {
+    //   fileLabel.textContent = fileInput.files[0].name; // Show the selected file name
+    // } else {
+    //   fileLabel.textContent = "Choose a photo"; // Reset label if no file selected
+    // }
+    const files = Array.from(fileInput.files).map(file => file.name);
+    fileLabel.textContent = files.join(", ");
   }
   
   // Upload the photo with loading indicator and result message
@@ -23,9 +25,17 @@ function showFileName() {
     loader.style.display = "block"; // Show the loading spinner
     message.textContent = ""; // Clear any previous message
   
-    const reader = new FileReader();
-    reader.onloadend = async () => {
-      const photoBase64 = reader.result.split(",")[1]; // Base64 encoded image
+    // const reader = new FileReader();
+    // reader.onloadend = async () => {
+    // const photoBase64 = reader.result.split(",")[1]; // Base64 encoded image
+    const photos = [];
+    for (const file of fileInput.files) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        photos.push(reader.result.split(",")[1]); // Add Base64 string of image
+      };
+      reader.readAsDataURL(file);
+    }
   
       try {
         const response = await fetch("/.netlify/functions/sendPhoto", {
@@ -33,18 +43,19 @@ function showFileName() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ photo: photoBase64 }),
+        //   body: JSON.stringify({ photo: photoBase64 }),
+        body: JSON.stringify({ photos }), // Send array of photos
         });
   
         const result = await response.json();
         message.textContent = result.message;
       } catch (error) {
-        message.textContent = "Failed to send photo. Try again later.";
+        message.textContent = "Failed to send photos. Try again later.";
       } finally {
         loader.style.display = "none"; // Hide the loading spinner
       }
     };
   
-    reader.readAsDataURL(fileInput.files[0]);
-  }
+    // reader.readAsDataURL(fileInput.files[0]);
+
   
