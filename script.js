@@ -31,10 +31,13 @@ function showFileNames() {
     const photos = [];
     for (const file of fileInput.files) {
       const reader = new FileReader();
-      reader.onloadend = () => {
-        photos.push(reader.result.split(",")[1]); // Add Base64 string of image
-      };
-      reader.readAsDataURL(file);
+      const photoBase64 = await new Promise((resolve) => { // awaiting the file's reading
+        reader.onloadend = () => {
+          resolve(reader.result.split(",")[1]); // Base64 encoded image
+        };
+        reader.readAsDataURL(file);
+      });
+      photos.push(photoBase64);
     }
   
       try {

@@ -10,31 +10,19 @@ exports.handler = async (event) => {
 
     // Parse the incoming form data
     const formData = JSON.parse(event.body);
-    // const { photo } = formData;
     const { photos } = formData;
 
-    // if (!photo) {
-    //   return { statusCode: 400, body: "No photo uploaded" };
-    // }
     if (!photos || photos.length === 0) {
-        return { statusCode: 400, body: "No photos uploaded" };
+      return { statusCode: 400, body: "No photos uploaded" };
     }
 
-    // Create the email with the photo attachment
+    // Create the email with multiple photo attachments
     const emailContent = {
       to: "sean.d.onamade@vanderbilt.edu",  // Replace with your email
       from: "seanonamade1@gmail.com",  // Replace with a verified sender
       subject: "New Photo Upload",
-      text: "Here are your photos.",
-    //   attachments: [
-    //     {
-    //       content: photo,
-    //       filename: "uploaded_photo.jpg",
-    //       type: "image/jpeg",
-    //       disposition: "attachment",
-    //     },
-    //   ],
-    attachments: photos.map((photo, index) => ({
+      text: "Here are the photos you just uploaded.",
+      attachments: photos.map((photo, index) => ({
         content: photo,
         filename: `uploaded_photo_${index + 1}.jpg`,
         type: "image/jpeg",
@@ -46,13 +34,13 @@ exports.handler = async (event) => {
 
     return {
       statusCode: 200,
-      body: JSON.stringify({ message: "Photo sent successfully!" }),
+      body: JSON.stringify({ message: "Photos sent successfully!" }),
     };
   } catch (error) {
-    console.error("Error sending photo:", error);
+    console.error("Error sending photos:", error);
     return {
       statusCode: 500,
-      body: JSON.stringify({ message: "Failed to send photo" }),
+      body: JSON.stringify({ message: "Failed to send photos" }),
     };
   }
 };
