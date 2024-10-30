@@ -21,9 +21,7 @@ exports.handler = async (event) => {
       to: "sean.d.onamade@vanderbilt.edu",  // Replace with your email
       from: "seanonamade1@gmail.com",  // Replace with a verified sender
       subject: "New Photo Upload",
-      html: `<p>Here’s the photo you just uploaded:</p>
-             <img src="data:image/jpeg;base64,${photo}" alt="Uploaded Photo" style="max-width:100%; height:auto;">
-             <p>Copy this image directly from here.</p>`,
+      text: "Here’s the photo you just uploaded.",
       attachments: [
         {
           content: photo,
