@@ -10,10 +10,14 @@ exports.handler = async (event) => {
 
     // Parse the incoming form data
     const formData = JSON.parse(event.body);
-    const { photo } = formData;
+    // const { photo } = formData;
+    const { photos } = formData;
 
-    if (!photo) {
-      return { statusCode: 400, body: "No photo uploaded" };
+    // if (!photo) {
+    //   return { statusCode: 400, body: "No photo uploaded" };
+    // }
+    if (!photos || photos.length === 0) {
+        return { statusCode: 400, body: "No photos uploaded" };
     }
 
     // Create the email with the photo attachment
@@ -21,15 +25,21 @@ exports.handler = async (event) => {
       to: "sean.d.onamade@vanderbilt.edu",  // Replace with your email
       from: "seanonamade1@gmail.com",  // Replace with a verified sender
       subject: "New Photo Upload",
-      text: "Here’s the photo you just uploaded.",
-      attachments: [
-        {
-          content: photo,
-          filename: "uploaded_photo.jpg",
-          type: "image/jpeg",
-          disposition: "attachment",
-        },
-      ],
+      text: "Here are your photos.",
+    //   attachments: [
+    //     {
+    //       content: photo,
+    //       filename: "uploaded_photo.jpg",
+    //       type: "image/jpeg",
+    //       disposition: "attachment",
+    //     },
+    //   ],
+    attachments: photos.map((photo, index) => ({
+        content: photo,
+        filename: `uploaded_photo_${index + 1}.jpg`,
+        type: "image/jpeg",
+        disposition: "attachment",
+      })),
     };
 
     await sendgrid.send(emailContent);
