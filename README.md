@@ -1,0 +1,1 @@
+I got tired of these Apple kids being able to take photos on their phones and load them up on their laptops. I need that kinda functionality for class but I kept having to add images to Google Drive on my phone and then download them on my laptop. So I created a site where I can take a picture with my phone and it sends it to my email B) light, light 
